@@ -14,12 +14,20 @@ public class Background : MonoBehaviour
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
-        transform.localScale = new Vector3(1, 1, 1);
+  
+        // Make sure scale is origin
+        transform.localScale = new Vector2(1, 1);
+        
+        // Get size of background image
         width = sr.sprite.bounds.size.x;
         height = sr.sprite.bounds.size.y;
+
+        // Get size of window at runtime
         worldScreenHeight = Camera.main.orthographicSize * 2.0f;
         worldScreenWidth = worldScreenHeight / Screen.height * Screen.width;
-        transform.localScale = new Vector3(worldScreenWidth / width, worldScreenHeight / height, 1);
+
+        // Scale to scale
+        transform.localScale = new Vector2(worldScreenWidth / width, worldScreenHeight / height);
     }
 
     // Update is called once per frame

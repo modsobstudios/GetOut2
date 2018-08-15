@@ -20,23 +20,30 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Controls while touching the floor
         if (grounded)
         {
+            // Left/Right
             if (Input.GetKey(KeyCode.A))
                 moveLeft();
             if (Input.GetKey(KeyCode.D))
                 moveRight();
+            // If not trying to move, stop quickly but naturally.
             if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
                 drag();
+            // Jump only if on the floor
             if (Input.GetKeyDown(KeyCode.Space))
                 jump();
         }
+        // Controls while in the air
         else
         {
+            // Different movement force while in the air
             if (Input.GetKey(KeyCode.A))
                 driftLeft();
             if (Input.GetKey(KeyCode.D))
                 driftRight();
+            // Different drag calculation while in the air
             if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
                 falloff();
         }
@@ -45,14 +52,22 @@ public class Player : MonoBehaviour
 
     }
 
+    //
+    // Ground Controls
+    //
+
     void moveLeft()
     {
-        rb.AddForce(new Vector2(-moveForce, 0));
+        // No infinite speed!
+        if(rb.velocity.x >= -moveForce)
+            rb.AddForce(new Vector2(-moveForce, 0));
     }
 
     void moveRight()
     {
-        rb.AddForce(new Vector2(moveForce, 0));
+        // No infinite speed!
+        if (rb.velocity.x <= moveForce)
+            rb.AddForce(new Vector2(moveForce, 0));
     }
 
     void jump()
@@ -65,20 +80,32 @@ public class Player : MonoBehaviour
         rb.velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x * dragForce, GetComponent<Rigidbody2D>().velocity.y);
     }
 
+    //
+    // Air Controls
+    //
+
     void driftLeft()
     {
-        rb.AddForce(new Vector2(-driftForce, 0));
+        // No infinite speed!
+        if (rb.velocity.x >= -driftForce)
+            rb.AddForce(new Vector2(-driftForce, 0));
     }
 
     void driftRight()
     {
-        rb.AddForce(new Vector2(driftForce, 0));
+        // No infinite speed!
+        if (rb.velocity.x <= driftForce)
+            rb.AddForce(new Vector2(driftForce, 0));
     }
 
     void falloff()
     {
         rb.velocity = new Vector2(rb.velocity.x * falloffForce, rb.velocity.y);
     }
+
+    //
+    // Collision Rules
+    //
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

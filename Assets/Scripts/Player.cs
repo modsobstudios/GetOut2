@@ -11,6 +11,9 @@ public class Player : MonoBehaviour
     float driftForce = 3.0f;
     float dragForce = 0.5f;
     float falloffForce = 0.99f;
+
+
+    public GameObject arm;
     // Use this for initialization
     void Start()
     {
@@ -48,7 +51,16 @@ public class Player : MonoBehaviour
                 falloff();
         }
 
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = Vector3.Distance(transform.position, Camera.main.transform.position);
+        Vector3 objectPos = Camera.main.WorldToScreenPoint(arm.transform.position);
+        mousePos.x -= objectPos.x;
+        mousePos.y -= objectPos.y;
+        float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
+        arm.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+            rb.AddForce(-mousePos.normalized * 300);
 
     }
 

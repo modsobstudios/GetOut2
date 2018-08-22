@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class WeightManip : MonoBehaviour
 {
-
+    [SerializeField]
+    List<Material> mats;
     [SerializeField]
     float range;
     [SerializeField]
@@ -15,6 +16,7 @@ public class WeightManip : MonoBehaviour
     float minMass;
     [SerializeField]
     bool suck = true;
+    int iter = 0;
     Vector2 dir;
     Vector2 ray;
     List<Vector3> positions;
@@ -37,6 +39,16 @@ public class WeightManip : MonoBehaviour
         }
         if (Input.GetMouseButton(1))//Can be changed later
         {
+            if (iter < mats.Count)
+            {
+                line.material = mats[iter++];
+            }
+            else
+            {
+                iter = 0;
+                line.material = mats[iter];
+            }
+
             if (line.enabled == false)
             {
                 line.enabled = true;
@@ -78,6 +90,8 @@ public class WeightManip : MonoBehaviour
             }
             if (hit.collider != null && hit.transform.tag != "Floor")
             {
+                Debug.Log(hit.transform.name);
+
                 if (hit.transform.GetComponent<Rigidbody2D>())
                 {
                     if (suck)
@@ -97,7 +111,7 @@ public class WeightManip : MonoBehaviour
                         }
                     }
                 }
-                Debug.Log(selfMass.mass);
+                //Debug.Log(selfMass.mass);
             }
             line.SetPositions(positions.ToArray());
         }

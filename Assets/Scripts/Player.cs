@@ -5,13 +5,14 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public bool grounded = true;
+    bool faceLeft = true;
     Rigidbody2D rb;
     float moveForce = 10.0f;
     float jumpForce = 250.0f;
     float driftForce = 3.0f;
     float dragForce = 0.5f;
     float falloffForce = 0.99f;
-
+    float recoilForce = 150.0f;
 
     public GameObject arm;
     // Use this for initialization
@@ -29,10 +30,20 @@ public class Player : MonoBehaviour
             // Left/Right
             if (Input.GetKey(KeyCode.A))
             {
+                if (!faceLeft)
+                {
+                    transform.localScale = new Vector3(-transform.localScale.x, 1, 1);
+                    faceLeft = !faceLeft;
+                }
                 moveLeft();
             }
             if (Input.GetKey(KeyCode.D))
             {
+                if (faceLeft)
+                {
+                    transform.localScale = new Vector3(-transform.localScale.x, 1, 1);
+                    faceLeft = !faceLeft;
+                }
                 moveRight();
             }
             // If not trying to move, stop quickly but naturally.
@@ -61,14 +72,26 @@ public class Player : MonoBehaviour
         mousePos.x -= objectPos.x;
         mousePos.y -= objectPos.y;
         float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
-        arm.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-        if (Mathf.Abs(angle) < 90)
-            arm.GetComponentInChildren<SpriteRenderer>().flipY = false;
+        if (faceLeft)
+        {
+            if (Mathf.Abs(angle) < 90)
+                arm.GetComponentInChildren<SpriteRenderer>().flipY = false;
+            else
+                arm.GetComponentInChildren<SpriteRenderer>().flipY = true;
+        }
         else
-            arm.GetComponentInChildren<SpriteRenderer>().flipY = true;
+        {
+            if (Mathf.Abs(angle) < 90)
+                arm.GetComponentInChildren<SpriteRenderer>().flipY = true;
+            else
+                arm.GetComponentInChildren<SpriteRenderer>().flipY = false;
+        }
+        if (!faceLeft)
+            angle += 180;
+        arm.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
-            rb.AddForce(-mousePos.normalized * 300);
+            rb.AddForce(-mousePos.normalized * recoilForce);
 
     }
 
@@ -79,7 +102,7 @@ public class Player : MonoBehaviour
     void moveLeft()
     {
         // No infinite speed!
-        if(rb.velocity.x >= -moveForce)
+        if (rb.velocity.x >= -moveForce)
             rb.AddForce(new Vector2(-moveForce, 0));
     }
 

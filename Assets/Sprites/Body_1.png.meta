@@ -1,10 +1,15 @@
 fileFormatVersion: 2
-guid: a4c312f44c74c1d40b061726895d8c11
-timeCreated: 1534727410
+guid: 9d5cbb52f5a757e44b9b6a5f51d7c25e
+timeCreated: 1534900360
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Gun_1_0
+    21300000: Body_1_0
+    21300002: Body_1_1
+    21300004: Body_1_2
+    21300006: Body_1_3
+    21300008: Body_1_4
+    21300010: Body_1_5
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -91,13 +96,83 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Gun_1_0
+      name: Body_1_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 10
-        width: 13
-        height: 7
+        x: 15
+        y: 2
+        width: 37
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Body_1_1
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 2
+        width: 37
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Body_1_2
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 2
+        width: 37
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Body_1_3
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 2
+        width: 37
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Body_1_4
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 2
+        width: 38
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Body_1_5
+      rect:
+        serializedVersion: 2
+        x: 335
+        y: 2
+        width: 37
+        height: 61
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

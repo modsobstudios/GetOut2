@@ -28,9 +28,13 @@ public class Player : MonoBehaviour
         {
             // Left/Right
             if (Input.GetKey(KeyCode.A))
+            {
                 moveLeft();
+            }
             if (Input.GetKey(KeyCode.D))
+            {
                 moveRight();
+            }
             // If not trying to move, stop quickly but naturally.
             if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
                 drag();
@@ -58,6 +62,10 @@ public class Player : MonoBehaviour
         mousePos.y -= objectPos.y;
         float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
         arm.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        if (Mathf.Abs(angle) < 90)
+            arm.GetComponentInChildren<SpriteRenderer>().flipY = false;
+        else
+            arm.GetComponentInChildren<SpriteRenderer>().flipY = true;
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
             rb.AddForce(-mousePos.normalized * 300);

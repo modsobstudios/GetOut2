@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: LightBeam_3
+  m_Name: DarkBeam_4
   m_Shader: {fileID: 203, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -39,9 +39,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: e90efe5c7a576fd4abdef4a7e25da8de, type: 3}
-        m_Scale: {x: 0.5, y: 0.3}
-        m_Offset: {x: 0.5, y: 0}
+        m_Texture: {fileID: 2800000, guid: ea9663bb985da0740ab2b0a3708231a4, type: 3}
+        m_Scale: {x: 0.166, y: 1}
+        m_Offset: {x: 0.67, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}

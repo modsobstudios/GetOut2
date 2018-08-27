@@ -29,7 +29,6 @@ public class Bullet : MonoBehaviour
     {
         if (collision.transform.tag == "Floor" || collision.transform.tag == "Wall")
         {
-            Debug.Log("Tick.");
             count++;
             if(count > limit)
                 Destroy(this.gameObject);

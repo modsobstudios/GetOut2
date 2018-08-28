@@ -5,7 +5,7 @@ using UnityEngine;
 public class WeightManip : MonoBehaviour
 {
     [SerializeField]
-    List<Material> mats;
+    List<Material> Lightmats, Darkmats;
     [SerializeField]
     float range;
     [SerializeField]
@@ -22,12 +22,14 @@ public class WeightManip : MonoBehaviour
     List<Vector3> positions;
     LineRenderer line;
     Rigidbody2D selfMass;
+    int mask;
     // Use this for initialization
     void Start()
     {
         line = gameObject.GetComponent<LineRenderer>();
         positions = new List<Vector3>();
         selfMass = gameObject.GetComponent<Rigidbody2D>();
+        mask = ~((1 << 8) | (1 << 0));
     }
 
     // Update is called once per frame
@@ -39,14 +41,29 @@ public class WeightManip : MonoBehaviour
         }
         if (Input.GetMouseButton(1))//Can be changed later
         {
-            if (iter < mats.Count)
+            if (suck)
             {
-                line.material = mats[iter++];
+                if (iter < Lightmats.Count)
+                {
+                    line.material = Lightmats[iter++];
+                }
+                else
+                {
+                    iter = 0;
+                    line.material = Lightmats[iter];
+                }
             }
             else
             {
-                iter = 0;
-                line.material = mats[iter];
+                if (iter < Darkmats.Count)
+                {
+                    line.material = Darkmats[iter++];
+                }
+                else
+                {
+                    iter = 0;
+                    line.material = Darkmats[iter];
+                }
             }
 
             if (line.enabled == false)
@@ -63,13 +80,28 @@ public class WeightManip : MonoBehaviour
 
             positions.Add(new Vector3(ray.x, ray.y, 0));
 
-            if (Mathf.Abs(Vector2.Distance(ray, dir)) > range)
+            if (transform.localScale.x > 0)
             {
-                hit = Physics2D.Raycast(ray, transform.InverseTransformPoint(dir), range);
+
+                if (Mathf.Abs(Vector2.Distance(ray, dir)) > range)
+                {
+                    hit = Physics2D.Raycast(ray, transform.InverseTransformPoint(dir), range, mask);
+                }
+                else
+                {
+                    hit = Physics2D.Raycast(ray, transform.InverseTransformPoint(dir), Mathf.Abs(Vector2.Distance(ray, dir)), mask);
+                }
             }
             else
             {
-                hit = Physics2D.Raycast(ray, transform.InverseTransformPoint(dir), Mathf.Abs(Vector2.Distance(ray, dir)));
+                if (Mathf.Abs(Vector2.Distance(ray, dir)) > range)
+                {
+                    hit = Physics2D.Raycast(ray, new Vector3(-transform.InverseTransformPoint(dir).x, transform.InverseTransformPoint(dir).y, transform.InverseTransformPoint(dir).z), range, mask);
+                }
+                else
+                {
+                    hit = Physics2D.Raycast(ray, new Vector3(-transform.InverseTransformPoint(dir).x, transform.InverseTransformPoint(dir).y, transform.InverseTransformPoint(dir).z), Mathf.Abs(Vector2.Distance(ray, dir)), mask);
+                }
             }
             if (hit.transform != null)
             {
@@ -88,7 +120,7 @@ public class WeightManip : MonoBehaviour
                     positions.Add(new Vector3((ray.x + direction.x * range), (ray.y + direction.y * range), 0));
                 }
             }
-            if (hit.collider != null && hit.transform.tag != "Floor")
+            if (hit.collider != null && hit.transform.tag != "Floor" && hit.transform.tag != "Wall")
             {
                 Debug.Log(hit.transform.name);
 

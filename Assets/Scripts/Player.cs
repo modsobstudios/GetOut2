@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     float dragForce = 0.5f;
     float falloffForce = 0.99f;
     float recoilForce = 150.0f;
+    public bool isDead = false;
 
     public GameObject arm;
     // Use this for initialization
@@ -24,6 +25,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isDead)
+            Die();
+
         // Controls while touching the floor
         if (grounded)
         {
@@ -93,6 +97,14 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0))
             rb.AddForce(-mousePos.normalized * recoilForce);
 
+    }
+
+    void Die()
+    {
+        // run death animation
+        // disable controls
+        // wait until animation is finished
+        // respawn at level start
     }
 
     //

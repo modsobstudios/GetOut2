@@ -23,6 +23,9 @@ public class WeightManip : MonoBehaviour
     LineRenderer line;
     Rigidbody2D selfMass;
     int mask;
+    [SerializeField]
+    int frameRate = 0;
+    int frameCount = 0;
 
     public bool stunned = false;
     // Use this for initialization
@@ -43,28 +46,32 @@ public class WeightManip : MonoBehaviour
         }
         if (Input.GetMouseButton(1) && !stunned)//Can be changed later
         {
-            if (suck)
+            frameCount++;
+            if (frameCount % frameRate == 0)
             {
-                if (iter < Lightmats.Count)
+                if (suck)
                 {
-                    line.material = Lightmats[iter++];
+                    if (iter < Lightmats.Count)
+                    {
+                        line.material = Lightmats[iter++];
+                    }
+                    else
+                    {
+                        iter = 0;
+                        line.material = Lightmats[iter];
+                    }
                 }
                 else
                 {
-                    iter = 0;
-                    line.material = Lightmats[iter];
-                }
-            }
-            else
-            {
-                if (iter < Darkmats.Count)
-                {
-                    line.material = Darkmats[iter++];
-                }
-                else
-                {
-                    iter = 0;
-                    line.material = Darkmats[iter];
+                    if (iter < Darkmats.Count)
+                    {
+                        line.material = Darkmats[iter++];
+                    }
+                    else
+                    {
+                        iter = 0;
+                        line.material = Darkmats[iter];
+                    }
                 }
             }
 
@@ -124,8 +131,7 @@ public class WeightManip : MonoBehaviour
             }
             if (hit.collider != null && hit.transform.tag != "Floor" && hit.transform.tag != "Wall")
             {
-                Debug.Log(hit.transform.name);
-
+                //Debug.Log(hit.transform.name);
                 if (hit.transform.GetComponent<Rigidbody2D>())
                 {
                     if (suck)

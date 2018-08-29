@@ -5,7 +5,9 @@ using UnityEngine;
 public class WeightManip : MonoBehaviour
 {
     [SerializeField]
-    List<Material> Lightmats, Darkmats;
+    List<Material> Lightmats;
+    [SerializeField]
+    List<Material> Darkmats;
     [SerializeField]
     float range;
     [SerializeField]

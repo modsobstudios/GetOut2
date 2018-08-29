@@ -23,6 +23,8 @@ public class WeightManip : MonoBehaviour
     LineRenderer line;
     Rigidbody2D selfMass;
     int mask;
+
+    public bool stunned = false;
     // Use this for initialization
     void Start()
     {
@@ -35,11 +37,11 @@ public class WeightManip : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !stunned)
         {
             suck = !suck;
         }
-        if (Input.GetMouseButton(1))//Can be changed later
+        if (Input.GetMouseButton(1) && !stunned)//Can be changed later
         {
             if (suck)
             {

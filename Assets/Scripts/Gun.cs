@@ -5,7 +5,7 @@ using UnityEngine;
 public class Gun : MonoBehaviour
 {
     public GameObject bullet;
-
+    public bool stunned = false;
 
     // Use this for initialization
     void Start()
@@ -16,7 +16,7 @@ public class Gun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse0))
+        if(Input.GetKeyDown(KeyCode.Mouse0) && !stunned)
         {
             GameObject b = Instantiate(bullet, transform);
             Vector3 mousePos = Input.mousePosition;

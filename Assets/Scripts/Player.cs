@@ -14,6 +14,10 @@ public class Player : MonoBehaviour
     float falloffForce = 0.99f;
     float recoilForce = 150.0f;
     public bool isDead = false;
+    public bool stunned = false;
+    public Gun gun;
+    public WeightManip beam;
+    int toll = 0;
 
     public GameObject arm;
     // Use this for initialization
@@ -28,83 +32,101 @@ public class Player : MonoBehaviour
         if (isDead)
             Die();
 
-        // Controls while touching the floor
-        if (grounded)
+        if (!stunned)
         {
-            // Left/Right
-            if (Input.GetKey(KeyCode.A))
+            // Controls while touching the floor
+            if (grounded)
             {
-                if (!faceLeft)
+                // Left/Right
+                if (Input.GetKey(KeyCode.A))
                 {
-                    transform.localScale = new Vector3(-transform.localScale.x, 1, 1);
-                    faceLeft = !faceLeft;
+                    if (!faceLeft)
+                    {
+                        transform.localScale = new Vector3(-transform.localScale.x, 1, 1);
+                        faceLeft = !faceLeft;
+                    }
+                    moveLeft();
                 }
-                moveLeft();
+                if (Input.GetKey(KeyCode.D))
+                {
+                    if (faceLeft)
+                    {
+                        transform.localScale = new Vector3(-transform.localScale.x, 1, 1);
+                        faceLeft = !faceLeft;
+                    }
+                    moveRight();
+                }
+                // If not trying to move, stop quickly but naturally.
+                if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+                    drag();
+                // Jump only if on the floor
+                if (Input.GetKeyDown(KeyCode.Space))
+                    jump();
             }
-            if (Input.GetKey(KeyCode.D))
+            // Controls while in the air
+            else
             {
-                if (faceLeft)
-                {
-                    transform.localScale = new Vector3(-transform.localScale.x, 1, 1);
-                    faceLeft = !faceLeft;
-                }
-                moveRight();
+                // Different movement force while in the air
+                if (Input.GetKey(KeyCode.A))
+                    driftLeft();
+                if (Input.GetKey(KeyCode.D))
+                    driftRight();
+                // Different drag calculation while in the air
+                if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+                    falloff();
             }
-            // If not trying to move, stop quickly but naturally.
-            if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
-                drag();
-            // Jump only if on the floor
-            if (Input.GetKeyDown(KeyCode.Space))
-                jump();
-        }
-        // Controls while in the air
-        else
-        {
-            // Different movement force while in the air
-            if (Input.GetKey(KeyCode.A))
-                driftLeft();
-            if (Input.GetKey(KeyCode.D))
-                driftRight();
-            // Different drag calculation while in the air
-            if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
-                falloff();
-        }
 
-        Vector3 mousePos = Input.mousePosition;
-        mousePos.z = Vector3.Distance(transform.position, Camera.main.transform.position);
-        Vector3 objectPos = Camera.main.WorldToScreenPoint(arm.transform.position);
-        mousePos.x -= objectPos.x;
-        mousePos.y -= objectPos.y;
-        float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
-        if (faceLeft)
-        {
-            if (Mathf.Abs(angle) < 90)
-                arm.GetComponentInChildren<SpriteRenderer>().flipY = false;
+            Vector3 mousePos = Input.mousePosition;
+            mousePos.z = Vector3.Distance(transform.position, Camera.main.transform.position);
+            Vector3 objectPos = Camera.main.WorldToScreenPoint(arm.transform.position);
+            mousePos.x -= objectPos.x;
+            mousePos.y -= objectPos.y;
+            float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
+            if (faceLeft)
+            {
+                if (Mathf.Abs(angle) < 90)
+                    arm.GetComponentInChildren<SpriteRenderer>().flipY = false;
+                else
+                    arm.GetComponentInChildren<SpriteRenderer>().flipY = true;
+            }
             else
-                arm.GetComponentInChildren<SpriteRenderer>().flipY = true;
-        }
-        else
-        {
-            if (Mathf.Abs(angle) < 90)
-                arm.GetComponentInChildren<SpriteRenderer>().flipY = true;
-            else
-                arm.GetComponentInChildren<SpriteRenderer>().flipY = false;
-        }
-        if (!faceLeft)
-            angle += 180;
-        arm.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+            {
+                if (Mathf.Abs(angle) < 90)
+                    arm.GetComponentInChildren<SpriteRenderer>().flipY = true;
+                else
+                    arm.GetComponentInChildren<SpriteRenderer>().flipY = false;
+            }
+            if (!faceLeft)
+                angle += 180;
+            arm.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-            rb.AddForce(-mousePos.normalized * recoilForce);
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+                rb.AddForce(-mousePos.normalized * recoilForce);
+        }
 
     }
 
+    public void stunEquipment(bool b)
+    {
+        gun.stunned = beam.stunned = b;
+    }
+
+
     void Die()
     {
-        // run death animation
         // disable controls
+        stunned = true;
+        stunEquipment(true);
+        // increment death counter
+        toll++;
+        // run death animation
         // wait until animation is finished
         // respawn at level start
+        transform.position = GameObject.Find("SpawnPoint").transform.position;
+        // undie
+        isDead = false;
+        stunned = false;
+        stunEquipment(false);
     }
 
     //

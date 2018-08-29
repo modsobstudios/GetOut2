@@ -56,4 +56,11 @@ public class GravityWell : MonoBehaviour {
 
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("YER DEAD, KID!");
+        if (collision.gameObject.tag == "Player")
+            thePlayer.isDead = true;
+    }
 }

@@ -127,6 +127,7 @@ public class Player : MonoBehaviour
         isDead = false;
         stunned = false;
         stunEquipment(false);
+        rb.mass = 1.0f;
     }
 
     //
@@ -186,13 +187,13 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.transform.tag == "Floor")
+        if (collision.transform.tag == "Floor" || collision.transform.tag == "WalkingWeightObject" || collision.transform.tag == "WalkingTrap")
             grounded = true;
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.transform.tag == "Floor")
+        if (collision.transform.tag == "Floor" || collision.transform.tag == "WalkingWeightObject" || collision.transform.tag == "WalkingTrap")
             grounded = false;
     }
 }

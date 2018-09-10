@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserTrap : MonoBehaviour
+public class LaserTrap : MasterEnabler
 {
     [SerializeField]
-    public bool masterEnabled = true;
     private bool enabled = true;
     [SerializeField]
     private float range;
@@ -34,11 +33,15 @@ public class LaserTrap : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (masterEnabled)
+        if (toggled)
         {
             Laserfy(); //Pew pew!
         }
-        if(masterEnabled && line.enabled == false)
+        else
+        {
+            line.enabled = false;
+        }
+        if(toggled && line.enabled == false)
         {
             line.enabled = true;
         }
@@ -46,13 +49,13 @@ public class LaserTrap : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (masterEnabled)// If it ain't on, don't check it.
+        if (toggled)// If it ain't on, don't check it.
         {
             if (collision.transform.tag == "Bullet")
             {
                 //This one is easy... it got shot. Disable.
                 line.enabled = false;
-                masterEnabled = false;
+                toggled = false;
             }
             else
             {
@@ -64,7 +67,7 @@ public class LaserTrap : MonoBehaviour
                         {
                             //Object is moving quick enough and is considered heavy
                             //Heavy boop, turn off.
-                            masterEnabled = false;
+                            toggled = false;
                             line.enabled = false;
                         }
                     }
@@ -132,13 +135,6 @@ public class LaserTrap : MonoBehaviour
                 }
             }
             line.SetPositions(positions.ToArray());
-        }
-        else
-        {
-            if (line.enabled == true)
-            {
-                line.enabled = false;
-            }
         }
     }
 }

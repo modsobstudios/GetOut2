@@ -9,6 +9,10 @@ TagManager:
   - Wall
   - SpawnPoint
   - Extent
+  - Trap
+  - WeightObject
+  - WalkingTrap
+  - WalkingWeightObject
   layers:
   - Default
   - TransparentFX

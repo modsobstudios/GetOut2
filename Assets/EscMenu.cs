@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class EscMenu : MonoBehaviour
@@ -39,6 +40,12 @@ public class EscMenu : MonoBehaviour
             player.stunned = false;
             Time.timeScale = 1;
         }
+    }
+
+    public void resetLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        toggle();
     }
 
     public void showHide()

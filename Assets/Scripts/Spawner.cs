@@ -6,6 +6,8 @@ public class Spawner : MasterEnabler
 {
 
     public GameObject toSpawn;
+
+    private GameObject spawnRef;
     // Use this for initialization
     void Start()
     {
@@ -17,7 +19,12 @@ public class Spawner : MasterEnabler
     {
         if (toggled)
         {
-            Instantiate(toSpawn,gameObject.transform.position,gameObject.transform.rotation);
+            if (spawnRef != null)
+            {
+                Destroy(spawnRef);
+            }
+
+            spawnRef = Instantiate(toSpawn, gameObject.transform.position, gameObject.transform.rotation);
             toggled = false;
         }
     }

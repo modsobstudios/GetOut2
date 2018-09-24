@@ -23,6 +23,7 @@ public class LaserTrap : MasterEnabler
     private Rigidbody2D selfMass;
     private float elapsedTime = 0;
     private bool flip = false;
+    
     // Use this for initialization
     void Start()
     {
@@ -40,10 +41,12 @@ public class LaserTrap : MasterEnabler
         else
         {
             line.enabled = false;
+   
         }
         if(toggled && line.enabled == false)
         {
             line.enabled = true;
+         
         }
     }
 

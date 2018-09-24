@@ -28,6 +28,8 @@ public class WeightManip : MonoBehaviour
     [SerializeField]
     int frameRate = 0;
     int frameCount = 0;
+    [SerializeField]
+    AudioSource Beam;
 
     public bool stunned = false;
     // Use this for initialization
@@ -80,6 +82,7 @@ public class WeightManip : MonoBehaviour
             if (line.enabled == false)
             {
                 line.enabled = true;
+                Beam.enabled = true;
             }
             RaycastHit2D hit = new RaycastHit2D();
             dir = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -162,6 +165,7 @@ public class WeightManip : MonoBehaviour
             if (line.enabled == true)
             {
                 line.enabled = false;
+                Beam.enabled = false;
             }
         }
     }

@@ -193,7 +193,9 @@ public class Player : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.transform.tag == "Floor" || collision.transform.tag == "WalkingWeightObject" || collision.transform.tag == "WalkingTrap")
+        if (collision.transform.tag == "Floor" || 
+            collision.transform.tag == "WalkingWeightObject" ||
+            collision.transform.tag == "WalkingTrap")
             grounded = false;
     }
 }

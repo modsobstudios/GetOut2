@@ -17,4 +17,9 @@ public class SceneSwitcher : MonoBehaviour {
         Application.Quit();
     }
 
+    public void SwitchToScene(int _sceneNum)
+    {
+        SceneManager.LoadScene(_sceneNum);
+    }
+
 }
